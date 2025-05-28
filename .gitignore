@@ -1,0 +1,89 @@
+# Ignore Visual Studio temporary files, build results, and personal settings
+
+## Build artifacts
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.pdb
+*.appx
+*.appxbundle
+*.msix
+*.msixbundle
+*.nupkg
+*.snupkg
+*.cache
+*.log
+*.ilk
+*.lib
+*.exp
+*.idb
+
+## Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.sln.ide
+*.sln.ide*
+*.slnbinlog
+
+## Rider / JetBrains
+.idea/
+*.sln.iml
+
+## Dependencies
+packages/
+node_modules/
+
+## NuGet
+*.nupkg
+project.lock.json
+project.assets.json
+packages.lock.json
+nuget.lock
+
+## Entity Framework Migrations
+Migrations/
+
+## User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.pfx
+*.p12
+Thumbs.db
+
+## Azure Functions
+local.settings.json
+
+## Logs
+*.log
+logs/
+
+## Resharper files
+*.DotSettings.user
+
+## Coverage & Test results
+TestResults/
+*.coverage
+*.coveragexml
+*.log
+.trx
+.coverage
+.coveragejson
+
+## Ignore publish directory
+Publish/
+
+## Ignore IDE-specific and other generated files
+.DS_Store
+*.orig
+
+#Docker
+*.env

@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  agent1:
+    build: .
+    container_name: azp-agent-windows-1
+    environment:
+      AZP_URL:   "https://dev.azure.com/AzDevOpsSampleOrg/"
+      AZP_TOKEN: "${AZP_TOKEN}"
+      AZP_POOL:  "SelfHostedWindows"
+      AZP_AGENT_NAME: "agent-win-1"
+      AZP_WORK:  "_work"
+    volumes:
+      - agent1_work:/azp/_work
+
+  agent2:
+    build: .
+    container_name: azp-agent-windows-2
+    environment:
+      AZP_URL:   "https://dev.azure.com/AzDevOpsSampleOrg/"
+      AZP_TOKEN: "${AZP_TOKEN}"
+      AZP_POOL:  "SelfHostedWindows"
+      AZP_AGENT_NAME: "agent-win-2"
+      AZP_WORK:  "_work"
+    volumes:
+      - agent2_work:/azp/_work
+
+volumes:
+  agent1_work:
+  agent2_work:
