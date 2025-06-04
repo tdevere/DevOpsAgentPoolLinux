@@ -1,5 +1,5 @@
 # Use Microsoft’s Ubuntu-based Azure Pipelines agent image
-FROM mcr.microsoft.com/azure-pipelines/linux-agent:latest
+FROM ubuntu:22.04
 
 # Switch to root to install extra packages if needed
 USER root
