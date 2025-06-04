@@ -1,27 +1,29 @@
-# Azure DevOps Self‑Hosted Linux Agents
+# Azure DevOps Self-Hosted Linux Agents
 
-This repository provides a turnkey solution to deploy **two** self‑hosted **Linux** agents into an Azure DevOps pool named **SelfHostedLinux** using Docker containers. The setup is **idempotent**, **restart‑resilient**, and includes live download progress, automatic registration, and robust troubleshooting guidance.
+This repository provides a turnkey solution to deploy **two** self-hosted **Linux** agents into an Azure DevOps pool named **SelfHostedLinux** using Docker containers. The setup is **idempotent**, **restart-resilient**, and includes live download progress, automatic registration, and robust troubleshooting guidance.
 
 ---
 
 ## 📁 Repository Structure
 
 ```
+
 DevOpsAgentPoolLinux/
 ├── .env                  # Personal Access Token and organization URL (ignored by Git)
 ├── Dockerfile            # Builds the Ubuntu-based Azure Pipelines agent container
 ├── docker-compose.yml    # Defines two agent services with restart policies and persistent volumes
 ├── start.sh              # Bootstrap script: download, extract, configure, run agent
 └── README.md             # This documentation
-```
+
+````
 
 ---
 
 ## 🔧 Prerequisites
 
-1. **Docker** installed (Linux containers) and running.
-2. An **Azure DevOps** organization (e.g. `https://dev.azure.com/AzDevOpsSampleOrg`).
-3. A **Personal Access Token (PAT)** with **Agent Pools (read & manage)** scope.
+1. **Docker** installed (Linux containers) and running.  
+2. An **Azure DevOps** organization (e.g. `https://dev.azure.com/AzDevOpsSampleOrg`).  
+3. A **Personal Access Token (PAT)** with **Agent Pools (read & manage)** scope.  
 4. A pool named **SelfHostedLinux** under **Organization Settings → Agent pools**.
 
 > **Do NOT** commit your PAT or `.env` to source control—this file is ignored by Git.
@@ -30,14 +32,13 @@ DevOpsAgentPoolLinux/
 
 ## ⚙️ Configuration
 
-1. **`.env`**
+1. **`.env`**  
    Create a file at the repo root:
-
    ```dotenv
    AZP_URL=https://dev.azure.com/AzDevOpsSampleOrg   # Your DevOps org URL
    AZP_TOKEN=YOUR_PERSONAL_ACCESS_TOKEN             # PAT with Agent Pools scope
    AZP_POOL=SelfHostedLinux                         # Target agent pool name
-   ```
+````
 
 2. **Environment variables**
 
@@ -51,7 +52,7 @@ DevOpsAgentPoolLinux/
 
 4. **Restart Policy**
 
-   * Each service uses `restart: unless-stopped` to ensure the containers auto‑start on host reboot.
+   * Each service uses `restart: unless-stopped` to ensure the containers auto-start on host reboot.
 
 ---
 
@@ -137,7 +138,7 @@ A: No. With persistent volumes and the `--unattended` guard, subsequent restarts
 **Q: How do I remove an agent from the pool?**
 A: Stop & remove the container with `docker-compose down`, then in Azure DevOps UI disable or delete the agent entry.
 
-**Q: Can I bind‑mount a host folder for the agent work directory?**
+**Q: Can I bind-mount a host folder for the agent work directory?**
 A: Yes—replace the named volume with `./agent1_work:/azp/_work`, but ensure folder permissions are correct.
 
 ---
@@ -150,4 +151,51 @@ A: Yes—replace the named volume with `./agent1_work:/azp/_work`, but ensure fo
 
 ---
 
+## Line Endings / Encoding (Windows → Linux)
+
+If you’re authoring or modifying any scripts (`*.sh`) on Windows, Git’s default behavior may convert LF (Unix) line endings to CRLF (Windows) when you commit. This can break the startup scripts inside the Linux-based agents.
+
+1. **Add a `.gitattributes` rule**
+   Make sure you have this line in your `.gitattributes` (repo root):
+
+   ```gitattributes
+   *.sh text eol=lf
+   ```
+
+   That forces Git to keep LF endings for all `.sh` files, no matter the platform.
+
+2. **Normalize existing line endings**
+   If you’ve already committed scripts with CRLF, run:
+
+   ```bash
+   git add --renormalize .
+   git commit -m "Normalize line endings for shell scripts"
+   ```
+
+   This rewrites any `*.sh` to use LF on disk and in the repo. After this, you won’t see warnings like:
+
+   ```
+   warning: in the working copy of 'start.sh', LF will be replaced by CRLF the next time Git touches it
+   ```
+
+3. **Configure your local Git (optional)**
+   If you prefer not to rely on `.gitattributes`, you can set:
+
+   ```bash
+   # On Windows, to stop CRLF insertion on checkout:
+   git config core.autocrlf input
+   ```
+
+   * `input` means “convert CRLF→LF on commit, but leave LF alone on checkout.”
+   * Alternatively, `git config core.autocrlf false` disables all conversions—Git will preserve whatever line endings are already in the repo.
+
+**Why this matters:**
+
+* The Azure Pipelines agent’s `start.sh` (and other helper scripts) must have LF endings so that `bash` on Linux won’t see stray carriage returns (`^M`) and fail.
+* By forcing `eol=lf`, you ensure any collaborator on Windows still commits the correct format.
+
+---
+
 *Maintainer: tdevere — feel free to open issues or pull requests!*
+
+```
