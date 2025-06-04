@@ -11,7 +11,7 @@ fi
 AZP_POOL=${AZP_POOL:-Default}
 AZP_AGENT_NAME=${AZP_AGENT_NAME:-$(hostname)}
 
-echo "→ Configuring Azure Pipelines agent"
+echo "Configuring Azure Pipelines agent"
 ./config.sh \
   --unattended \
   --url "$AZP_URL" \
@@ -22,11 +22,11 @@ echo "→ Configuring Azure Pipelines agent"
   --acceptTeeEula
 
 cleanup() {
-  echo "→ Removing Azure Pipelines agent"
+  echo "Removing Azure Pipelines agent"
   ./config.sh remove --unattended --auth pat --token "$AZP_TOKEN"
 }
 trap 'cleanup; exit 130' INT
 trap 'cleanup; exit 143' TERM
 
-echo "→ Running Azure Pipelines agent"
+echo "Running Azure Pipelines agent"
 exec ./run.sh

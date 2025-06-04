@@ -1,13 +1,11 @@
-version: '3.8'
-
 services:
   agent1:
     build: .
     container_name: azp-agent-linux-1
     environment:
-      AZP_URL:        "https://dev.azure.com/AzDevOpsSampleOrg/"
+      AZP_URL:        "${AZP_URL}"
       AZP_TOKEN:      "${AZP_TOKEN}"
-      AZP_POOL:       "SelfHostedLinux"
+      AZP_POOL:       "${AZP_POOL}"
       AZP_AGENT_NAME: "agent-linux-1"
       AZP_WORK:       "_work"
     volumes:
@@ -18,9 +16,9 @@ services:
     build: .
     container_name: azp-agent-linux-2
     environment:
-      AZP_URL:        "https://dev.azure.com/AzDevOpsSampleOrg/"
+      AZP_URL:        "${AZP_URL}"
       AZP_TOKEN:      "${AZP_TOKEN}"
-      AZP_POOL:       "SelfHostedLinux"
+      AZP_POOL:       "${AZP_POOL}"
       AZP_AGENT_NAME: "agent-linux-2"
       AZP_WORK:       "_work"
     volumes:
