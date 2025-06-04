@@ -17,7 +17,6 @@ DevOpsAgentPoolLinux/
 
 ````
 
----
 
 ## 🔧 Prerequisites
 
@@ -28,7 +27,6 @@ DevOpsAgentPoolLinux/
 
 > **Do NOT** commit your PAT or `.env` to source control—this file is ignored by Git.
 
----
 
 ## ⚙️ Configuration
 
@@ -38,7 +36,6 @@ DevOpsAgentPoolLinux/
    AZP_URL=https://dev.azure.com/AzDevOpsSampleOrg   # Your DevOps org URL
    AZP_TOKEN=YOUR_PERSONAL_ACCESS_TOKEN             # PAT with Agent Pools scope
    AZP_POOL=SelfHostedLinux                         # Target agent pool name
-````
 
 2. **Environment variables**
 
