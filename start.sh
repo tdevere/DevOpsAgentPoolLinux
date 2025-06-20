@@ -16,20 +16,26 @@ echo "   URL:   $AZP_URL"
 echo "   Pool:  $AZP_POOL"
 echo "   Agent: $AZP_AGENT_NAME"
 
-# If already configured, skip reconfiguring
-if [ -e ".agent" ]; then
-  echo ">> Agent already configured. Skipping config."
-else
-  echo ">> Configuring agent..."
-  ./config.sh \
-    --unattended \
-    --url "$AZP_URL" \
-    --auth pat \
-    --token "$AZP_TOKEN" \
-    --pool "$AZP_POOL" \
-    --agent "$AZP_AGENT_NAME" \
-    --acceptTeeEula
+# If already configured, remove old registration
+if [ -f ".agent" ]; then
+  echo ">> Removing existing agent configuration"
+  ./config.sh remove --unattended \
+    --url   "$AZP_URL" \
+    --auth  pat \
+    --token "$AZP_TOKEN"
+
+  # clean up any leftover state
+  rm -rf _work externals .credentials .agent
 fi
+
+echo ">> Configuring agent..."
+./config.sh --unattended \
+  --url   "$AZP_URL" \
+  --auth  pat \
+  --token "$AZP_TOKEN" \
+  --pool  "$AZP_POOL" \
+  --agent "$AZP_AGENT_NAME" \
+  --acceptTeeEula
 
 # Graceful cleanup on termination signals
 cleanup() {

@@ -18,6 +18,7 @@ RUN apt-get update && \
       git \
       ca-certificates \
       libssl-dev \
+      docker.io \
       openjdk-11-jdk-headless \
       maven && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -45,6 +46,7 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash && \
 # 5) Create and configure 'agent' user
 RUN useradd --create-home agent \
     && mkdir -p /azp/_work /azp/_tool \
+    && usermod -aG docker agent \
     && chown -R agent:agent /azp
 
 # 6) Copy start.sh and set permissions
